@@ -245,9 +245,7 @@ profileAgencia.textContent = user.agencia || "-";
 profileRegional.textContent = user.regional;
 profileGestor.textContent = user.gestor;
 
-if (user.matricula === "7098") {
-  profilePhoto.src = "fotos/7098.jpg";
-}
+profilePhoto.src = `fotos/${user.matricula}.jpg`;
 
 lastAccessText.textContent = new Date().toLocaleString("pt-BR");
 
