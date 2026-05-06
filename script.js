@@ -3310,7 +3310,7 @@ Permaneço à disposição para quaisquer esclarecimentos adicionais.`;
       : "TRAFO QUEIMADO";
 
     document.getElementById("emailTo").value =
-      "maria.santos@equatorialenergia.com.br";
+      "maria.santos.silva@equatorialenergia.com.br";
 
     document.getElementById("emailCc").value =
       "eldem.souza@equatorialenergia.com.br; pedro.souza@equatorialenergia.com.br; clayson.almeida@equatorialenergia.com.br; aldelino.silva@equatorialenergia.com.br; edmilson.junior@equatorialenergia.com.br; gilliard.vaz@equatorialenergia.com.br; aline.riker@equatorialenergia.com.br; juliana.lima@equatorialenergia.com.br; tulia.lopes@cgbengenharia.com.br; carlos.almeida@cgbengenharia.com.br; kleberton.cruz@cgbengenharia.com.br; eveline.gato@cgbengenharia.com.br; marliane.santos@cgbengenharia.com.br; adilson.coelho@cgbengenharia.com.br; julyanne.rodrigues@cgbengenharia.com.br; luana.caires@cgbengenharia.com.br; ana.lopes@cgbengenharia.com.br; ana.magalhaes@cgbengenharia.com.br; carolina.silva@cgbengenharia.com.br; marciele.ferreira@cgbengenharia.com.br; abel.tabosa@cgbengenharia.com.br";
