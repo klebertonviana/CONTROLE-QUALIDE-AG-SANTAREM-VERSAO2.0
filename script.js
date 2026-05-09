@@ -16,6 +16,25 @@ function formatarTextoPadrao(texto) {
   return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
 }
 
+function formatarNomeProprio(texto) {
+  if (!texto) return "";
+
+  const palavrasMinusculas = ["da", "de", "do", "das", "dos", "e"];
+
+  return texto
+    .toLowerCase()
+    .split(" ")
+    .filter(palavra => palavra.trim() !== "")
+    .map((palavra, index) => {
+      if (index !== 0 && palavrasMinusculas.includes(palavra)) {
+        return palavra;
+      }
+
+      return palavra.charAt(0).toUpperCase() + palavra.slice(1);
+    })
+    .join(" ");
+}
+
 function normalizarTextoLivre(texto) {
   if (!texto) return "";
 
@@ -173,8 +192,13 @@ const usuarios = [
 
 // ================= LINKS =================
 const linksDentro = {
-  "Troca com Análise": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__jKbIdJUOUJRRUpFOVU2TFhKOVJYVVVCOEIwTjM3NS4u",
+    "Troca com Análise": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__jKbIdJUOUJRRUpFOVU2TFhKOVJYVVVCOEIwTjM3NS4u",
   "Reclamação": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__jKbIdJUN0NLQ0JPN0RVNUtXTlZaS1pQVDlLSTVDMy4u",
+"Danos Elétricos": "#",
+"Danos Materiais": "#",
+"Aferição": "#",
+"Devolução de Crédito em Espécie": "#",
+"Nível de Tensão": "#",
   "Plano de Contingência": "https://forms.office.com/pages/responsepage.aspx?id=UtPobFF_KUeKzTo8uhC_jAFRZMlEMmBOhSoASQsPrCNUMlJIRU9ITjBQU0NRSlFZTllMMVBRT1c4Ni4u&route=shorturl",
   "Controle de Serviços Manuais": "https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__jKbIdJUN043NEhYRUFYWVFYNDBLWDJWMEdZMlBDOC4u",
   "Reincidência": "https://forms.cloud.microsoft/pages/responsepage.aspx?id=UtPobFF_KUeKzTo8uhC_jAFRZMlEMmBOhSoASQsPrCNUMzZONTJEU0VaNFY4OTlVNVFCOEpLVDZITS4u&route=shorturl",
@@ -208,6 +232,8 @@ const pages = document.querySelectorAll(".page");
 
 const iframe = document.getElementById("contentFrame");
 const iframeTitle = document.getElementById("iframeTitle");
+
+const backToAcompanhamento = document.getElementById("backToAcompanhamento");
 
 const profileFooter = document.getElementById("profileFooter");
 const lastAccessText = document.getElementById("lastAccessText");
@@ -270,8 +296,8 @@ menuItems.forEach(item => {
   });
 });
 
-// ================= CARDS HOME =================
-document.querySelectorAll(".home-card").forEach(card => {
+// ================= CARDS HOME / ACOMPANHAMENTO =================
+document.querySelectorAll(".home-card, .acompanhamento-card").forEach(card => {
   card.addEventListener("click", () => {
     const title = card.dataset.title || card.innerText.trim();
 
@@ -309,6 +335,12 @@ function navegar(title) {
     return;
   }
 
+if (title === "Acompanhamento de Serviços") {
+  abrirPagina("acompanhamentoPage");
+  iframe.src = "";
+  return;
+}
+
   if (title === "Registros de Reclamação") {
     abrirPagina("complaintPage");
     iframe.src = "";
@@ -316,11 +348,29 @@ function navegar(title) {
   }
 
   if (linksDentro[title]) {
-    abrirPagina("iframePage");
-    iframeTitle.textContent = title;
-    iframe.src = linksDentro[title];
-    return;
+  abrirPagina("iframePage");
+
+  iframeTitle.textContent = title;
+  iframe.src = linksDentro[title];
+
+  const servicosAcompanhamento = [
+    "Troca com Análise",
+    "Reclamação",
+    "Danos Elétricos",
+    "Danos Materiais",
+    "Aferição",
+    "Devolução de Crédito em Espécie",
+    "Nível de Tensão"
+  ];
+
+  if (servicosAcompanhamento.includes(title)) {
+    backToAcompanhamento.classList.remove("hidden");
+  } else {
+    backToAcompanhamento.classList.add("hidden");
   }
+
+  return;
+}
 
   if (linksFora[title]) {
     window.open(linksFora[title], "_blank");
@@ -335,6 +385,11 @@ function abrirPagina(id) {
   pages.forEach(p => p.classList.remove("active-page"));
   document.getElementById(id).classList.add("active-page");
 }
+
+backToAcompanhamento.addEventListener("click", () => {
+  abrirPagina("acompanhamentoPage");
+  iframe.src = "";
+});
 
 // ================= SCRIPTS =================
 const scripts = [
@@ -1880,20 +1935,28 @@ document.querySelector("#emailPage .email-work-area")?.classList.remove("hidden"
 
       document.getElementById("generateEmailButton").disabled = false;
 
-} else if (tipo === "emailSupervisaoOutros") {
+} else if (tipo === "plptRemotoMla") {
 
   document.getElementById("emailDynamicFields").innerHTML = `
-
     <div class="complaint-field">
-      <label>Assunto</label>
-      <input id="email_assunto_livre" autocomplete="off">
+      <label>Nome do cliente</label>
+      <input id="email_cliente" autocomplete="off">
     </div>
 
     <div class="complaint-field">
-      <label>Texto do e-mail</label>
-      <textarea id="email_texto_livre" rows="6" style="resize: vertical;"></textarea>
+      <label>CPF</label>
+      <input id="email_cpf" autocomplete="off">
     </div>
 
+    <div class="complaint-field">
+      <label>Nome da comunidade</label>
+      <input id="email_comunidade" autocomplete="off">
+    </div>
+
+    <div class="complaint-field">
+      <label>Nome da cidade</label>
+      <input id="email_cidade" autocomplete="off">
+    </div>
   `;
 
   document.getElementById("generateEmailButton").disabled = false;
@@ -3502,6 +3565,40 @@ A supervisão da agência, Kleberton Viana, encontra-se em cópia para acompanha
 
     return;
   }
+
+if (emailTipoSelecionado === "plptRemotoMla") {
+  const cliente = formatarNomeProprio(document.getElementById("email_cliente")?.value.trim() || "");
+  const cpf = document.getElementById("email_cpf")?.value.trim() || "";
+  const comunidade = document.getElementById("email_comunidade")?.value.trim() || "";
+  const cidade = formatarNomeProprio(document.getElementById("email_cidade")?.value.trim() || "");
+
+  document.getElementById("emailTo").value =
+    "eduardo.ribeiro@cgbengenharia.com.br";
+
+  document.getElementById("emailCc").value =
+    "tulia.lopes@cgbengenharia.com.br; carlos.almeida@cgbengenharia.com.br; kleberton.cruz@cgbengenharia.com.br; eveline.gato@cgbengenharia.com.br; marliane.santos@cgbengenharia.com.br; adilson.coelho@cgbengenharia.com.br; julyanne.rodrigues@cgbengenharia.com.br; luana.caires@cgbengenharia.com.br; ana.lopes@cgbengenharia.com.br; carolina.silva@cgbengenharia.com.br; marciele.ferreira@cgbengenharia.com.br; abel.tabosa@cgbengenharia.com.br; amanda.regina@cgbengenharia.com.br; marlisson.jean@cgbengenharia.com.br; marciele.barbosa@cgbengenharia.com.br;";
+
+  document.getElementById("emailSubject").value =
+    "SOLICITAÇÃO DE CADASTRO PLPT REMOTO (MLA) NO SISTEMA SAP";
+
+  document.getElementById("emailBody").value =
+`${saudacaoHorario()}
+
+Prezado Eduardo,
+
+Cliente compareceu à agência de atendimento presencial em busca de informações relacionadas às suas faturas. Em análise, identificamos que o mesmo é atendido pelo programa PLPT Remoto (MLA), contudo, o cadastro ainda não se encontra efetivado no sistema SAP.
+
+Diante disso, solicito vosso apoio na realização do devido cadastro, conforme informações abaixo:
+
+Nome do Parceiro: ${cliente}
+CPF: ${cpf}
+Comunidade: ${comunidade}
+Cidade: ${cidade}
+
+A supervisão da agência, na pessoa do Sr. Kleberton Viana, ora copiado, permanece à disposição para suporte e informações adicionais.`;
+
+  return;
+}
 
   if (emailTipoSelecionado === "conexaoMla") {
     const comunidade = document.getElementById("email_comunidade")?.value.trim() || "";

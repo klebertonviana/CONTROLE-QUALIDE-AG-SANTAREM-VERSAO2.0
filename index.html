@@ -99,14 +99,9 @@
             <span>Troca por Análise com Desligamento</span>
           </button>
 
-          <button class="menu-item" data-page="iframe" data-title="Troca com Análise">
-            <i class="fa-solid fa-file-circle-check"></i>
-            <span>Troca com Análise</span>
-          </button>
-
-          <button class="menu-item" data-title="Reclamação">
-  <i class="fa-solid fa-circle-exclamation"></i>
-  <span>Reclamação</span>
+          <button class="menu-item" data-title="Acompanhamento de Serviços">
+  <i class="fa-solid fa-list-check"></i>
+  <span>Acompanhamento de Serviços</span>
 </button>
 
           <button class="menu-item" data-title="Registros de Reclamação">
@@ -349,8 +344,79 @@
           </div>
         </section>
 
+<!-- ACOMPANHAMENTO DE SERVIÇOS -->
+<section id="acompanhamentoPage" class="page">
+  <h1>Acompanhamento de Serviços</h1>
+  <p class="page-subtitle">Selecione o tipo de acompanhamento que deseja acessar.</p>
+
+  <div class="cards-grid">
+
+    <button class="home-card acompanhamento-card" data-title="Troca com Análise">
+      <div class="card-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+      <div>
+        <strong>Troca com Análise</strong>
+        <span>Abrir formulário</span>
+      </div>
+    </button>
+
+    <button class="home-card acompanhamento-card" data-title="Reclamação">
+      <div class="card-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+      <div>
+        <strong>Reclamação</strong>
+        <span>Abrir formulário</span>
+      </div>
+    </button>
+
+    <button class="home-card acompanhamento-card" data-title="Danos Elétricos">
+      <div class="card-icon"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+      <div>
+        <strong>Danos Elétricos</strong>
+        <span>Abrir formulário</span>
+      </div>
+    </button>
+
+    <button class="home-card acompanhamento-card" data-title="Danos Materiais">
+      <div class="card-icon"><i class="fa-solid fa-house-crack"></i></div>
+      <div>
+        <strong>Danos Materiais</strong>
+        <span>Abrir formulário</span>
+      </div>
+    </button>
+
+    <button class="home-card acompanhamento-card" data-title="Aferição">
+      <div class="card-icon"><i class="fa-solid fa-gauge-high"></i></div>
+      <div>
+        <strong>Aferição</strong>
+        <span>Abrir formulário</span>
+      </div>
+    </button>
+
+    <button class="home-card acompanhamento-card" data-title="Devolução de Crédito em Espécie">
+  <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+  <div>
+    <strong>Devolução de Crédito em Espécie</strong>
+    <span>Abrir formulário</span>
+  </div>
+</button>
+
+<button class="home-card acompanhamento-card" data-title="Nível de Tensão">
+  <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+  <div>
+    <strong>Nível de Tensão</strong>
+    <span>Abrir formulário</span>
+  </div>
+</button>
+
+  </div>
+</section>
+
         <!-- IFRAME -->
         <section id="iframePage" class="page">
+
+<button id="backToAcompanhamento" class="back-button hidden">
+  <i class="fa-solid fa-arrow-left"></i>
+  Voltar para Acompanhamento de Serviços
+</button>
           <h1 id="iframeTitle">Página</h1>
           <p class="page-subtitle">Conteúdo carregado dentro do sistema.</p>
 
@@ -484,6 +550,11 @@
           <strong>CONEXÃO MLA</strong>
           <span>Apoio técnico</span>
         </button>
+
+        <button class="script-item" type="button" data-type="plptRemotoMla">
+           <strong>CADASTRO DE CLIENTE PLPT REMOTO (MLA) NO SISTEMA SAP APÓS CONEXÃO</strong>
+           <span>Solicitação de cadastro de cliente PLPT remoto no SAP</span>
+         </button>
 
         <button class="script-item" type="button" data-type="oficioAssociacaoMoradores">
           <strong>OFÍCIO DE ASSOCIAÇÃO DE MORADORES</strong>
