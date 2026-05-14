@@ -1050,8 +1050,8 @@ function abrirFormularioDevolucaoCredito() {
   scriptDynamicFields.innerHTML = `
 
     <div class="dynamic-script-alert complaint-field full">
-      <strong>Prezado colaborador,</strong>
-      <p>Preencha corretamente os dados para geração automática do formulário oficial da distribuidora.</p>
+      <strong>Prezado colaborador (a),</strong>
+      <p>Em caso de dúvidas, orientamos que as informações sejam consultadas na ferramenta Aprende+ da Equatorial Energia.</p>
     </div>
 
     <div class="complaint-field">
@@ -1082,7 +1082,7 @@ function abrirFormularioDevolucaoCredito() {
     </div>
 
     <div class="complaint-field">
-      <label>Parceiro</label>
+      <label>Número do Parceiro</label>
       <input id="credito_parceiro" type="text">
     </div>
 
@@ -1118,12 +1118,12 @@ function abrirFormularioDevolucaoCredito() {
 
     <div class="complaint-field">
       <label>Data de nascimento</label>
-      <input id="credito_nascimento" type="text">
+      <input id="credito_nascimento" type="text" maxlength="10">
     </div>
 
     <div class="complaint-field">
       <label>Telefone</label>
-      <input id="credito_telefone" type="text">
+      <input id="credito_telefone" type="text" maxlength="15">
     </div>
 
     <div class="complaint-field">
@@ -1164,12 +1164,12 @@ function abrirFormularioDevolucaoCredito() {
 
       <div class="complaint-field">
         <label>Data nascimento representante</label>
-        <input id="credito_nascimento_representante" type="text">
+        <input id="credito_nascimento_representante" type="text" maxlength="10">
       </div>
 
       <div class="complaint-field">
         <label>Telefone representante</label>
-        <input id="credito_tel_representante" type="text">
+        <input id="credito_tel_representante" type="text" maxlength="15">
       </div>
 
       <div class="complaint-field">
@@ -1207,12 +1207,18 @@ function abrirFormularioDevolucaoCredito() {
 
       <div class="complaint-field">
         <label>Conta</label>
-        <input id="credito_conta" type="text">
+<input id="credito_conta" type="text" placeholder="Ex: 949">
+
+<label>Dígito da conta</label>
+<input id="credito_digito_conta" type="text" maxlength="1" placeholder="Ex: 0">
       </div>
 
       <div class="complaint-field">
         <label>Agência</label>
-        <input id="credito_agencia" type="text">
+<input id="credito_agencia" type="text" placeholder="Ex: 36411">
+
+<label>Dígito da agência</label>
+<input id="credito_digito_agencia" type="text" maxlength="1" placeholder="Ex: 8">
       </div>
 
       <div class="complaint-field">
@@ -1267,10 +1273,26 @@ function abrirFormularioDevolucaoCredito() {
     });
 
   document
-    .getElementById("baixarFormularioCredito")
-    .addEventListener("click", baixarFormularioCredito);
+  .getElementById("baixarFormularioCredito")
+  .addEventListener("click", baixarFormularioCredito);
 
-  gerarScriptDevolucaoCredito();
+aplicarMascaraData(
+  document.getElementById("credito_nascimento")
+);
+
+aplicarMascaraData(
+  document.getElementById("credito_nascimento_representante")
+);
+
+aplicarMascaraTelefone(
+  document.getElementById("credito_telefone")
+);
+
+aplicarMascaraTelefone(
+  document.getElementById("credito_tel_representante")
+);
+
+gerarScriptDevolucaoCredito();
 }
 
 // ================= GERAR SCRIPT =================
@@ -1282,7 +1304,7 @@ function gerarScriptDevolucaoCredito() {
   const origem =
     document.getElementById("credito_origem")?.value || "";
 
-  const texto = `PARCEIRO SOLICITA A DEVOLUÇÃO DE CRÉDITO DE VALOR DE ${valor}
+  const texto = `PARCEIRO SOLICITA A DEVOLUÇÃO DE CRÉDITO DE VALOR DE R$ ${valor}
 
 ONDE O MESMO DESEJA QUE SEJA DEVOLVIDO EM SUA CONTA BANCÁRIA.
 
@@ -1389,7 +1411,10 @@ async function baixarFormularioCredito() {
   // ================= DADOS BANCÁRIOS =================
   sheet.getCell("F51").value = valor("credito_banco");
   sheet.getCell("N51").value = valor("credito_conta");
-  sheet.getCell("F55").value = valor("credito_agencia");
+sheet.getCell("T51").value = valor("credito_digito_conta");
+
+sheet.getCell("F55").value = valor("credito_agencia");
+sheet.getCell("K55").value = valor("credito_digito_agencia");
 
   const tipoConta = valor("credito_tipo_conta");
 
@@ -1420,6 +1445,54 @@ async function baixarFormularioCredito() {
     `DEVOLUCAO_CREDITO_${valor("credito_parceiro") || "CLIENTE"}.xlsx`;
 
   link.click();
+}
+
+// ================= MÁSCARA DATA =================
+function aplicarMascaraData(input) {
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+    let valor = input.value.replace(/\D/g, "");
+
+    if (valor.length > 8) {
+      valor = valor.slice(0, 8);
+    }
+
+    if (valor.length >= 5) {
+      valor = valor.slice(0, 2) + "/" + valor.slice(2, 4) + "/" + valor.slice(4);
+    } else if (valor.length >= 3) {
+      valor = valor.slice(0, 2) + "/" + valor.slice(2);
+    }
+
+    input.value = valor;
+  });
+}
+
+// ================= MÁSCARA TELEFONE =================
+function aplicarMascaraTelefone(input) {
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+
+    let valor = input.value.replace(/\D/g, "");
+
+    if (valor.length > 11) {
+      valor = valor.slice(0, 11);
+    }
+
+    if (valor.length > 6) {
+      valor =
+        "(" + valor.slice(0, 2) + ") " +
+        valor.slice(2, 7) + "-" +
+        valor.slice(7);
+    } else if (valor.length > 2) {
+      valor =
+        "(" + valor.slice(0, 2) + ") " +
+        valor.slice(2);
+    }
+
+    input.value = valor;
+  });
 }
 
 // ================= CAMPOS OBRIGATÓRIOS - SCRIPTS DINÂMICOS =================
