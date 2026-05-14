@@ -714,9 +714,9 @@ function abrirFormularioDeslocamentoRamal() {
 
   scriptDynamicFields.innerHTML = `
     <div class="dynamic-script-alert complaint-field full">
-      <strong>Prezado colaborador,</strong>
-      <p>Em caso de dúvidas, orientamos que as informações sejam consultadas na ferramenta Aprende+ da Equatorial Energia.</p>
-    </div>
+  <strong>Prezado colaborador,</strong>
+  <p>Em caso de dúvidas, orientamos que as informações sejam consultadas na ferramenta Aprende+ da Equatorial Energia.</p>
+</div>
 
     <div class="complaint-field">
       <label for="ramal_nomeCliente">Nome do cliente</label>
@@ -1050,9 +1050,20 @@ function abrirFormularioDevolucaoCredito() {
   scriptDynamicFields.innerHTML = `
 
     <div class="dynamic-script-alert complaint-field full">
-      <strong>Prezado colaborador (a),</strong>
-      <p>Em caso de dúvidas, orientamos que as informações sejam consultadas na ferramenta Aprende+ da Equatorial Energia.</p>
-    </div>
+  <strong>Prezado colaborador (a),</strong>
+
+  <p>
+    Em caso de dúvidas, orientamos que as informações sejam consultadas na ferramenta Aprende+ da Equatorial Energia.
+  </p>
+
+  <p>
+    ⚠️ Não esquecer de realizar o bloqueio do crédito depois de abrir a nota. Dúvidas como bloquear chamem a liderança.
+  </p>
+
+  <p>
+    📋 Não esquecer de lançar a nota do serviço no link de acompanhamento do Controle de Qualidade.
+  </p>
+</div>
 
     <div class="complaint-field">
       <label>Valor do crédito</label>
@@ -1130,6 +1141,24 @@ function abrirFormularioDevolucaoCredito() {
       <label>Service Request</label>
       <input id="credito_sr" type="text">
     </div>
+
+<div class="complaint-field">
+  <label>Cidade</label>
+
+  <select id="credito_cidade">
+    <option value="">Selecione...</option>
+
+    <option>Santarém - PA</option>
+    <option>Monte Alegre - PA</option>
+    <option>Óbidos - PA</option>
+    <option>Oriximiná - PA</option>
+    <option>Juruti - PA</option>
+    <option>Alenquer - PA</option>
+    <option>Novo Progresso - PA</option>
+    <option>Rurópolis - PA</option>
+    <option>Itaituba - PA</option>
+  </select>
+</div>
 
     <div class="complaint-field full">
       <label>Autoriza conta de terceiros?</label>
@@ -1369,6 +1398,7 @@ async function baixarFormularioCredito() {
   sheet.getCell("AA17").value = valor("credito_telefone");
 
   sheet.getCell("AC73").value = valor("credito_sr");
+  sheet.getCell("H71").value = valor("credito_cidade");
 
   // ================= TERCEIROS =================
   const terceiros = valor("credito_terceiros");
