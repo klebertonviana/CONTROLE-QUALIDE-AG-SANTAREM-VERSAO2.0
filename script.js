@@ -439,6 +439,11 @@ Att. Viúva Negra`
     tipo: "dinamicoNivelTensao",
     texto: "nivel de tensao oscilação fornecimento comodos periodo eletrodomestico comercio contato"
   },
+{
+  titulo: "DEVOLUÇÃO DE CRÉDITO EM ESPECIE",
+  tipo: "dinamicoDevolucaoCredito",
+  texto: "devolução crédito espécie formulario dados bancarios cliente conta contrato"
+},
   {
     titulo: "TRANSFERÊNCIA DE PARCELAMENTO EM APROVAÇÃO",
     texto: `Bom dia,
@@ -658,6 +663,11 @@ const filtrados = termo
 
 if (script.tipo === "dinamicoNivelTensao") {
   abrirFormularioNivelTensao();
+  return;
+}
+
+if (script.tipo === "dinamicoDevolucaoCredito") {
+  abrirFormularioDevolucaoCredito();
   return;
 }
 
@@ -1018,6 +1028,377 @@ atualizarCamposObrigatoriosScript(camposObrigatoriosNivelTensao);
     copyButton.disabled = true;
     scriptSelecionado = null;
   }
+}
+
+// ================= SCRIPT DINÂMICO - DEVOLUÇÃO DE CRÉDITO =================
+function abrirFormularioDevolucaoCredito() {
+
+  scriptSelecionado = {
+    titulo: "DEVOLUÇÃO DE CRÉDITO EM ESPECIE",
+    texto: ""
+  };
+
+  scriptsWorkArea.classList.remove("hidden");
+  scriptsWorkArea.classList.remove("simple-mode");
+
+  scriptDynamicFormCard.classList.remove("hidden");
+  scriptResultCard.classList.remove("hidden");
+
+  scriptDynamicBadge.textContent = "Devolução de Crédito em Espécie";
+  selectedTitle.textContent = "Script gerado";
+
+  scriptDynamicFields.innerHTML = `
+
+    <div class="dynamic-script-alert complaint-field full">
+      <strong>Prezado colaborador,</strong>
+      <p>Preencha corretamente os dados para geração automática do formulário oficial da distribuidora.</p>
+    </div>
+
+    <div class="complaint-field">
+      <label>Valor do crédito</label>
+      <input id="credito_valor" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Origem do crédito</label>
+      <select id="credito_origem">
+        <option value="">Selecione...</option>
+        <option>PAGAMENTO EM DUPLICIDADE</option>
+        <option>FATURAMENTO INCORRETO</option>
+        <option>ESTORNO/CANCELAMENTO DE FATURA</option>
+        <option>SERVIÇOS COBRADO E NÃO EXECUTADOS</option>
+        <option>COMPENSAÇÃO DE INDICADORES</option>
+      </select>
+    </div>
+
+    <div class="complaint-field">
+      <label>Conta contrato</label>
+      <input id="credito_cc" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Instalação</label>
+      <input id="credito_instalacao" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Parceiro</label>
+      <input id="credito_parceiro" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Situação IN</label>
+      <select id="credito_situacao">
+        <option value="">Selecione...</option>
+        <option>LIGADO</option>
+        <option>CORTADO</option>
+        <option>DESLIGADO</option>
+      </select>
+    </div>
+
+    <div class="complaint-field full">
+      <label>Titular</label>
+      <input id="credito_titular" type="text">
+    </div>
+
+    <div class="complaint-field full">
+      <label>Endereço</label>
+      <input id="credito_endereco" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>CPF</label>
+      <input id="credito_cpf" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>RG</label>
+      <input id="credito_rg" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Data de nascimento</label>
+      <input id="credito_nascimento" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Telefone</label>
+      <input id="credito_telefone" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Service Request</label>
+      <input id="credito_sr" type="text">
+    </div>
+
+    <div class="complaint-field full">
+      <label>Autoriza conta de terceiros?</label>
+      <select id="credito_terceiros">
+        <option value="">Selecione...</option>
+        <option>SIM</option>
+        <option>NÃO</option>
+      </select>
+    </div>
+
+    <div id="areaRepresentante" class="hidden">
+
+      <div class="complaint-field full">
+        <label>Responsável legal</label>
+        <input id="credito_responsavel" type="text">
+      </div>
+
+      <div class="complaint-field full">
+        <label>Endereço representante</label>
+        <input id="credito_endereco_representante" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>CPF representante</label>
+        <input id="credito_cpf_representante" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>RG representante</label>
+        <input id="credito_rg_representante" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Data nascimento representante</label>
+        <input id="credito_nascimento_representante" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Telefone representante</label>
+        <input id="credito_tel_representante" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Vínculo</label>
+        <input id="credito_vinculo" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Tipo documento apresentado</label>
+        <input id="credito_documento" type="text">
+      </div>
+
+    </div>
+
+    <div class="complaint-field">
+      <label>Referência</label>
+      <input id="credito_referencia" type="text">
+    </div>
+
+    <div class="complaint-field">
+      <label>Conta bancária ou ordem de pagamento?</label>
+      <select id="credito_tipo_pagamento">
+        <option value="">Selecione...</option>
+        <option>CONTA BANCÁRIA</option>
+        <option>ORDEM DE PAGAMENTO</option>
+      </select>
+    </div>
+
+    <div id="areaBanco" class="hidden">
+
+      <div class="complaint-field">
+        <label>Banco</label>
+        <input id="credito_banco" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Conta</label>
+        <input id="credito_conta" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Agência</label>
+        <input id="credito_agencia" type="text">
+      </div>
+
+      <div class="complaint-field">
+        <label>Tipo de conta</label>
+        <select id="credito_tipo_conta">
+          <option value="">Selecione...</option>
+          <option>POUPANÇA</option>
+          <option>CORRENTE</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="complaint-field full">
+      <button id="baixarFormularioCredito" class="copy-script-button">
+        <i class="fa-solid fa-file-excel"></i>
+        Baixar formulário preenchido
+      </button>
+    </div>
+  `;
+
+  document
+    .querySelectorAll("#scriptDynamicFields input, #scriptDynamicFields select")
+    .forEach(campo => {
+      campo.addEventListener("input", gerarScriptDevolucaoCredito);
+      campo.addEventListener("change", gerarScriptDevolucaoCredito);
+    });
+
+  document
+    .getElementById("credito_terceiros")
+    .addEventListener("change", function () {
+
+      document
+        .getElementById("areaRepresentante")
+        .classList.toggle("hidden", this.value !== "SIM");
+
+      gerarScriptDevolucaoCredito();
+    });
+
+  document
+    .getElementById("credito_tipo_pagamento")
+    .addEventListener("change", function () {
+
+      document
+        .getElementById("areaBanco")
+        .classList.toggle(
+          "hidden",
+          this.value !== "CONTA BANCÁRIA"
+        );
+
+      gerarScriptDevolucaoCredito();
+    });
+
+  document
+    .getElementById("baixarFormularioCredito")
+    .addEventListener("click", baixarFormularioCredito);
+
+  gerarScriptDevolucaoCredito();
+}
+
+// ================= GERAR SCRIPT =================
+function gerarScriptDevolucaoCredito() {
+
+  const valor =
+    document.getElementById("credito_valor")?.value || "";
+
+  const origem =
+    document.getElementById("credito_origem")?.value || "";
+
+  const texto = `PARCEIRO SOLICITA A DEVOLUÇÃO DE CRÉDITO DE VALOR DE ${valor}
+
+ONDE O MESMO DESEJA QUE SEJA DEVOLVIDO EM SUA CONTA BANCÁRIA.
+
+SEGUE DOCUMENTAÇÃO EM ANEXO
+
+ORIGEM DO CRÉDITO: ${origem}
+
+PARCEIRO CIENTE DO PRAZO DE ATENDIMENTO DA SOLICITAÇÃO DE 30 DIAS.`;
+
+  selectedText.textContent = texto;
+
+  atualizarCamposObrigatoriosScript([
+    "credito_valor",
+    "credito_origem"
+  ]);
+
+  if (valor && origem) {
+
+    copyButton.disabled = false;
+
+    scriptSelecionado = {
+      titulo: "DEVOLUÇÃO DE CRÉDITO EM ESPECIE",
+      texto: texto
+    };
+
+  } else {
+
+    copyButton.disabled = true;
+    scriptSelecionado = null;
+  }
+}
+
+// ================= BAIXAR EXCEL =================
+async function baixarFormularioCredito() {
+
+  const response =
+    await fetch("formularios/devolucao_credito.xlsx");
+
+  const arrayBuffer =
+    await response.arrayBuffer();
+
+  const workbook =
+    XLSX.read(arrayBuffer, { type: "array" });
+
+  const sheet =
+    workbook.Sheets["FORM_I"];
+
+  function valor(id) {
+    return document.getElementById(id)?.value || "";
+  }
+
+  sheet["F11"] = { t: "s", v: valor("credito_cc") };
+  sheet["M11"] = { t: "s", v: valor("credito_instalacao") };
+  sheet["Y11"] = { t: "s", v: valor("credito_parceiro") };
+  sheet["AD11"] = { t: "s", v: valor("credito_situacao") };
+  sheet["F13"] = { t: "s", v: valor("credito_titular") };
+  sheet["F15"] = { t: "s", v: valor("credito_endereco") };
+  sheet["F17"] = { t: "s", v: valor("credito_cpf") };
+  sheet["L17"] = { t: "s", v: valor("credito_rg") };
+  sheet["R17"] = { t: "s", v: valor("credito_nascimento") };
+  sheet["AA17"] = { t: "s", v: valor("credito_telefone") };
+  sheet["AC73"] = { t: "s", v: valor("credito_sr") };
+
+  const terceiros =
+    valor("credito_terceiros");
+
+  if (terceiros === "SIM") {
+    sheet["F25"] = { t: "s", v: "X" };
+  }
+
+  if (terceiros === "NÃO") {
+    sheet["D25"] = { t: "s", v: "X" };
+  }
+
+  sheet["F27"] = { t: "s", v: valor("credito_responsavel") };
+  sheet["F29"] = { t: "s", v: valor("credito_endereco_representante") };
+  sheet["F31"] = { t: "s", v: valor("credito_cpf_representante") };
+  sheet["L31"] = { t: "s", v: valor("credito_rg_representante") };
+  sheet["R31"] = { t: "s", v: valor("credito_nascimento_representante") };
+  sheet["AA31"] = { t: "s", v: valor("credito_tel_representante") };
+  sheet["F33"] = { t: "s", v: valor("credito_vinculo") };
+  sheet["Q33"] = { t: "s", v: valor("credito_documento") };
+
+  sheet["N39"] = { t: "s", v: valor("credito_valor") };
+  sheet["W39"] = { t: "s", v: valor("credito_referencia") };
+
+  const tipoPagamento =
+    valor("credito_tipo_pagamento");
+
+  if (tipoPagamento === "CONTA BANCÁRIA") {
+    sheet["D49"] = { t: "s", v: "X" };
+  }
+
+  if (tipoPagamento === "ORDEM DE PAGAMENTO") {
+    sheet["X49"] = { t: "s", v: "X" };
+  }
+
+  sheet["F51"] = { t: "s", v: valor("credito_banco") };
+  sheet["N51"] = { t: "s", v: valor("credito_conta") };
+  sheet["F55"] = { t: "s", v: valor("credito_agencia") };
+
+  const tipoConta =
+    valor("credito_tipo_conta");
+
+  if (tipoConta === "POUPANÇA") {
+    sheet["N55"] = { t: "s", v: "X" };
+  }
+
+  if (tipoConta === "CORRENTE") {
+    sheet["R55"] = { t: "s", v: "X" };
+  }
+
+  XLSX.writeFile(
+    workbook,
+    `DEVOLUCAO_CREDITO_${valor("credito_parceiro") || "CLIENTE"}.xlsx`
+  );
 }
 
 // ================= CAMPOS OBRIGATÓRIOS - SCRIPTS DINÂMICOS =================
